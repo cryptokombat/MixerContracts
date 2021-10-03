@@ -1,0 +1,10 @@
+node_modules
+build
+.openzeppelin
+.env
+.vscode
+artifacts
+cache
+typechain
+coverage
+coverage.json
