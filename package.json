@@ -23,6 +23,7 @@
     "deploy": "hardhat deploy",
     "verify": "hardhat verify",
     "export": "hardhat export --export-all ./deployments/export.json",
+    "flatten": "hardhat flatten",
     "test": "hardhat test",
     "coverage": "hardhat coverage"
   },

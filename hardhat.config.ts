@@ -58,6 +58,13 @@ const config: HardhatUserConfig = {
       accounts: [TESTNET_DEPLOYER_PK],
     },
   },
+  namedAccounts: {
+    deployer: {
+      default: 0,
+      1: 0,
+      4: 0,
+    },
+  },
   etherscan: {
     apiKey: ETHERSCAN_API_KEY,
   },
