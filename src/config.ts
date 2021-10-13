@@ -1,5 +1,6 @@
 import { BigNumber, utils } from 'ethers'
 import { NomicLabsHardhatPluginError } from 'hardhat/plugins'
+import { arrayRange } from './utils'
 
 export enum NetworkID {
   MAINNET = 1,
@@ -31,7 +32,73 @@ const collectionAddress: { [networkID in NetworkID]: string } = {
   [NetworkID.BSC]: '0x0',
   [NetworkID.BSC_TESTNET]: '0x669a6367d5234e5F49f315042c4ADb12a9b6554f',
   [NetworkID.POLYGON]: '0x0',
-  [NetworkID.POLYGON_MUMBAI]: '0x0',
+  [NetworkID.POLYGON_MUMBAI]: '0x9e96d6047308E07C331C2EcB7Acb538A3AAD493a',
+}
+
+export enum HeroEdition {
+  EMPTY,
+  GENESIS,
+  EPIC,
+  RARE,
+  COMMON,
+}
+
+const maxTokenId = 32
+
+const allTokenIds = arrayRange(1, maxTokenId, 1)
+
+const genesisTokenIds = arrayRange(1, maxTokenId, 4)
+
+const epicTokenIds = arrayRange(2, maxTokenId, 4)
+
+const rareTokenIds = arrayRange(3, maxTokenId, 4)
+
+const commonTokenIds = arrayRange(4, maxTokenId, 4)
+
+const maxTokens = [1, 1000, 1000, 1000]
+const initialTokens = [0, 300, 300, 300]
+
+const maxArray = Array.from({ length: maxTokenId / maxTokens.length }, () => maxTokens).flat()
+const initialArray = Array.from({ length: maxTokenId / maxTokens.length }, () => initialTokens).flat()
+
+export const createTokenArgs = {
+  maxArray,
+  initialArray,
+}
+export const tokenEditionMapping: { [editionId in HeroEdition]: number[] } = {
+  [HeroEdition.EMPTY]: allTokenIds,
+  [HeroEdition.GENESIS]: genesisTokenIds,
+  [HeroEdition.EPIC]: epicTokenIds,
+  [HeroEdition.RARE]: rareTokenIds,
+  [HeroEdition.COMMON]: commonTokenIds,
+}
+
+export interface MixerConfig {
+  editions: HeroEdition[]
+  chances: number[]
+}
+
+export const mixerConfig: { [editionId in HeroEdition]: MixerConfig } = {
+  [HeroEdition.EMPTY]: {
+    editions: [HeroEdition.COMMON, HeroEdition.RARE, HeroEdition.EPIC],
+    chances: [59700, 36600, 3700],
+  },
+  [HeroEdition.GENESIS]: {
+    editions: [HeroEdition.COMMON, HeroEdition.RARE, HeroEdition.EPIC],
+    chances: [59700, 36600, 3700],
+  },
+  [HeroEdition.EPIC]: {
+    editions: [HeroEdition.COMMON, HeroEdition.RARE, HeroEdition.EPIC],
+    chances: [59700, 36600, 3700],
+  },
+  [HeroEdition.RARE]: {
+    editions: [HeroEdition.COMMON, HeroEdition.RARE, HeroEdition.EPIC],
+    chances: [59700, 36600, 3700],
+  },
+  [HeroEdition.COMMON]: {
+    editions: [HeroEdition.COMMON, HeroEdition.RARE, HeroEdition.EPIC],
+    chances: [59700, 36600, 3700],
+  },
 }
 
 export async function getCollectionAddress(networkId: string): Promise<string> {
