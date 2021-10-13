@@ -25,6 +25,8 @@
     "export": "hardhat export --export-all ./deployments/export.json",
     "flatten": "hardhat flatten",
     "test": "hardhat test",
+    "run": "hardhat run",
+    "setup": "hardhat run scripts/000-setup-contracts.ts",
     "coverage": "hardhat coverage"
   },
   "devDependencies": {
@@ -49,5 +51,10 @@
     "solidity-coverage": "^0.7.17",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "@typechain/ethers-v5": "^7.2.0",
+    "@typechain/hardhat": "^2.3.1",
+    "typechain": "^5.2.0"
   }
 }

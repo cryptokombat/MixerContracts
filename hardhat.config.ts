@@ -4,6 +4,7 @@ import 'hardhat-deploy'
 import 'hardhat-deploy-ethers'
 import 'hardhat-gas-reporter'
 import '@nomiclabs/hardhat-etherscan'
+import '@typechain/hardhat'
 import 'hardhat-tracer'
 import 'solidity-coverage'
 
@@ -48,12 +49,12 @@ const config: HardhatUserConfig = {
       accounts: [TESTNET_DEPLOYER_PK],
     },
     polygon: {
-      url: `https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      url: `https://rpc-mainnet.maticvigil.com`,
       saveDeployments: true,
       accounts: [MAINNET_DEPLOYER_PK],
     },
     mumbai: {
-      url: `https://polygon-mumbai.infura.io/v3/${INFURA_API_KEY}`,
+      url: `https://rpc-mumbai.maticvigil.com`,
       saveDeployments: true,
       accounts: [TESTNET_DEPLOYER_PK],
     },
@@ -66,7 +67,7 @@ const config: HardhatUserConfig = {
     },
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    apiKey: POLYGONSCAN_API_KEY,
   },
   gasReporter: {
     coinmarketcap: COINMARKETCAP_API_KEY,
