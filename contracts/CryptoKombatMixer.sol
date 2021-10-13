@@ -2,8 +2,11 @@
 pragma solidity ^0.8.4;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol';
 import './interfaces/ICollection.sol';
+
+import 'hardhat/console.sol';
 
 contract CryptoKombatMixer is ERC1155Holder, Ownable {
     enum HeroEdition {
@@ -28,9 +31,9 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
 
     uint256 private constant DECIMAL_PRECISION = 3;
     uint256 private constant PERCENTS_SUM = 100 * 10**DECIMAL_PRECISION;
-    uint256 private randomNonce = 0;
+    uint256 private randomNonce;
 
-    uint256 private mixRequestId = 0;
+    uint256 private mixRequestId;
 
     mapping(bytes32 => MixRequest) public mixRequests;
 
@@ -58,9 +61,10 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
     function mixHeroes(uint256[] memory _ids) external virtual {
         require(_ids.length == 3, 'CryptoKombatMixer: Incorrect input length');
         require(isSameEditions(_ids), 'CryptoKombatMixer: Input editions are not same');
+        //console.log('input ', _ids[0], _ids[1], _ids[2]);
 
-        collection.safeBatchTransferFrom(msg.sender, address(this), _ids, _getFilledArray(_ids.length, 1), bytes('0x0'));
-
+        //collection.safeBatchTransferFrom(msg.sender, address(this), _ids, _getFilledArray(_ids.length, 1), bytes('0x0'));
+        collection.burnBatch(msg.sender, _ids, _getFilledArray(3, 1));
         mixRequestId++;
         mixRequests[bytes32(mixRequestId)] = MixRequest({ account: msg.sender, editionIn: heroIdToEdition[_ids[0]], inIds: _ids });
 
@@ -74,36 +78,44 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
 
         uint256 randomChance = randomValue % PERCENTS_SUM;
 
+        //console.log('randomValue ', randomValue);
+        //console.log('randomChance ', randomChance);
+
         uint256 epicChance = mixerConfigs[mixRequest.editionIn][HeroEdition.EPIC];
         uint256 rareChance = mixerConfigs[mixRequest.editionIn][HeroEdition.RARE];
-        uint256 commonChance = mixerConfigs[mixRequest.editionIn][HeroEdition.EPIC];
-
-        HeroEdition editionOut = HeroEdition.EMPTY;
+        //uint256 commonChance = mixerConfigs[mixRequest.editionIn][HeroEdition.EPIC];
+        //console.log('epicChance ', epicChance);
+        //console.log('rareChance ', rareChance);
+        HeroEdition editionOut;
 
         if (randomChance <= epicChance) {
             editionOut = HeroEdition.EPIC;
-        } else if (randomChance <= rareChance) {
+        } else if (randomChance > epicChance && randomChance <= rareChance) {
             editionOut = HeroEdition.RARE;
         } else {
             editionOut = HeroEdition.COMMON;
         }
+        //console.log('editionOut ', uint8(editionOut));
 
         uint256 tokenId = _getValidOutputTokenId(editionOut, randomValue);
+        //console.log('tokenId ', tokenId);
+
         if (tokenId > 0) {
             collection.mint(mixRequest.account, tokenId, 1, bytes('0x0'));
-            collection.burnBatch(address(this), mixRequest.inIds, _getFilledArray(mixRequest.inIds.length, 1), bytes('0x0'));
+            //collection.burnBatch(address(this), mixRequest.inIds, _getFilledArray(mixRequest.inIds.length, 1));
 
             emit HeroesMixSuceess(mixRequest.account, requestId, mixRequest.editionIn, editionOut, tokenId);
         } else {
-            collection.safeBatchTransferFrom(
-                address(this),
-                mixRequest.account,
-                mixRequest.inIds,
-                _getFilledArray(mixRequest.inIds.length, 1),
-                bytes('0x0')
-            );
+            // collection.safeBatchTransferFrom(
+            //     address(this),
+            //     mixRequest.account,
+            //     mixRequest.inIds,
+            //     _getFilledArray(mixRequest.inIds.length, 1),
+            //     bytes('0x0')
+            // );
             emit HeroesMixReverted(mixRequest.account, requestId, mixRequest.editionIn);
         }
+        delete mixRequests[requestId];
     }
 
     function _getValidOutputTokenId(HeroEdition editionOut, uint256 randomValue) internal view returns (uint256 tokenId) {

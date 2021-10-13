@@ -23,15 +23,13 @@ interface ICollection {
     function burn(
         address _from,
         uint256 _id,
-        uint256 _quantity,
-        bytes memory _data
+        uint256 _quantity
     ) external;
 
     function burnBatch(
         address _from,
         uint256[] memory _ids,
-        uint256[] memory _quantities,
-        bytes memory _data
+        uint256[] memory _quantities
     ) external;
 
     function safeTransferFrom(
