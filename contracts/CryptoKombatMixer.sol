@@ -29,6 +29,7 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
 
     ICollection public collection;
 
+    address private constant DEAD = 0x000000000000000000000000000000000000dEaD;
     uint256 private constant DECIMAL_PRECISION = 3;
     uint256 private constant PERCENTS_SUM = 100 * 10**DECIMAL_PRECISION;
     uint256 private randomNonce;
@@ -63,8 +64,8 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
         require(isSameEditions(_ids), 'CryptoKombatMixer: Input editions are not same');
         //console.log('input ', _ids[0], _ids[1], _ids[2]);
 
-        //collection.safeBatchTransferFrom(msg.sender, address(this), _ids, _getFilledArray(_ids.length, 1), bytes('0x0'));
-        collection.burnBatch(msg.sender, _ids, _getFilledArray(3, 1));
+        collection.safeBatchTransferFrom(msg.sender, address(this), _ids, _getFilledArray(_ids.length, 1), bytes('0x0'));
+        //collection.burnBatch(msg.sender, _ids, _getFilledArray(3, 1));
         mixRequestId++;
         mixRequests[bytes32(mixRequestId)] = MixRequest({ account: msg.sender, editionIn: heroIdToEdition[_ids[0]], inIds: _ids });
 
@@ -106,13 +107,13 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
 
             emit HeroesMixSuceess(mixRequest.account, requestId, mixRequest.editionIn, editionOut, tokenId);
         } else {
-            // collection.safeBatchTransferFrom(
-            //     address(this),
-            //     mixRequest.account,
-            //     mixRequest.inIds,
-            //     _getFilledArray(mixRequest.inIds.length, 1),
-            //     bytes('0x0')
-            // );
+            collection.safeBatchTransferFrom(
+                address(this),
+                mixRequest.account,
+                mixRequest.inIds,
+                _getFilledArray(mixRequest.inIds.length, 1),
+                bytes('0x0')
+            );
             emit HeroesMixReverted(mixRequest.account, requestId, mixRequest.editionIn);
         }
         delete mixRequests[requestId];
@@ -203,5 +204,13 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
         editionToHeroIds[_edition].push(_id);
 
         emit EditionToIdMappingAdded(_edition, _id);
+    }
+
+    function retrieveHeroesBatch(uint256[] memory _ids) external onlyOwner {
+        collection.safeBatchTransferFrom(address(this), msg.sender, _ids, _getFilledArray(_ids.length, 1), bytes('0x0'));
+    }
+
+    function burnHeroesBatch(uint256[] memory _ids) external onlyOwner {
+        collection.safeBatchTransferFrom(address(this), DEAD, _ids, _getFilledArray(_ids.length, 1), bytes('0x0'));
     }
 }
