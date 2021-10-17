@@ -67,7 +67,7 @@ const config: HardhatUserConfig = {
     },
   },
   etherscan: {
-    apiKey: POLYGONSCAN_API_KEY,
+    apiKey: BSCSCAN_API_KEY,
   },
   gasReporter: {
     coinmarketcap: COINMARKETCAP_API_KEY,

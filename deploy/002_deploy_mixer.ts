@@ -1,10 +1,10 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { DeployFunction } from 'hardhat-deploy/types'
-import { getCollectionAddress, tokenEditionMapping, HeroEdition, mixerConfig } from '../src/config'
+import { getCollectionAddress } from '../src/config'
 import { sleep } from '../src/utils'
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  const { deployments, getNamedAccounts, getChainId, run, ethers } = hre
+  const { deployments, getNamedAccounts, getChainId, run } = hre
   const { deploy } = deployments
 
   const { deployer } = await getNamedAccounts()

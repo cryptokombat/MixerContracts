@@ -30,7 +30,7 @@ const collectionAddress: { [networkID in NetworkID]: string } = {
   [NetworkID.RINKEBY]: '0xea0144115c9F722f26963aCC6d564Cee8Bd77F76',
   [NetworkID.KOVAN]: '0x0',
   [NetworkID.BSC]: '0x0',
-  [NetworkID.BSC_TESTNET]: '0x669a6367d5234e5F49f315042c4ADb12a9b6554f',
+  [NetworkID.BSC_TESTNET]: '0x611477c54F8f2dA620Ea0A3B44729929c6C91a27',
   [NetworkID.POLYGON]: '0x0',
   [NetworkID.POLYGON_MUMBAI]: '0x9e96d6047308E07C331C2EcB7Acb538A3AAD493a',
 }
@@ -65,12 +65,35 @@ export const createTokenArgs = {
   maxArray,
   initialArray,
 }
-export const tokenEditionMapping: { [editionId in HeroEdition]: number[] } = {
+
+type TokenMapping = {
+  [key in HeroEdition]: number[]
+}
+
+const polygonTokenEditionMapping: TokenMapping = {
   [HeroEdition.EMPTY]: allTokenIds,
   [HeroEdition.GENESIS]: genesisTokenIds,
   [HeroEdition.EPIC]: epicTokenIds,
   [HeroEdition.RARE]: rareTokenIds,
   [HeroEdition.COMMON]: commonTokenIds,
+}
+
+const bscTokenEditionMapping: TokenMapping = {
+  [HeroEdition.EMPTY]: [...arrayRange(1, 38, 1)],
+  [HeroEdition.GENESIS]: [...arrayRange(1, 28, 4), 32],
+  [HeroEdition.EPIC]: [...arrayRange(2, 28, 4), 33],
+  [HeroEdition.RARE]: [...arrayRange(3, 28, 4), 34],
+  [HeroEdition.COMMON]: [...arrayRange(4, 28, 4), 35],
+}
+
+const tokenMappingByChain: { [networkID in NetworkID]: TokenMapping | undefined } = {
+  [NetworkID.MAINNET]: undefined,
+  [NetworkID.RINKEBY]: undefined,
+  [NetworkID.KOVAN]: undefined,
+  [NetworkID.BSC]: undefined,
+  [NetworkID.BSC_TESTNET]: bscTokenEditionMapping,
+  [NetworkID.POLYGON]: undefined,
+  [NetworkID.POLYGON_MUMBAI]: polygonTokenEditionMapping,
 }
 
 export interface MixerConfig {
@@ -101,6 +124,18 @@ export const mixerConfig: { [editionId in HeroEdition]: MixerConfig } = {
   },
 }
 
+export async function getTokenMapping(networkId: string): Promise<TokenMapping | undefined> {
+  const chainID = parseInt(networkId) as NetworkID
+
+  const mapping = tokenMappingByChain[chainID]
+
+  if (mapping === undefined) {
+    throw new NomicLabsHardhatPluginError('Token Mapping', `The token mapping could not be found for this network. ChainID: ${chainID}.`)
+  }
+
+  return mapping
+}
+
 export async function getCollectionAddress(networkId: string): Promise<string> {
   const chainID = parseInt(networkId) as NetworkID
 
@@ -109,7 +144,7 @@ export async function getCollectionAddress(networkId: string): Promise<string> {
   if (address === undefined) {
     throw new NomicLabsHardhatPluginError(
       'Collection Address',
-      `An collection address could not be found for this network. ChainID: ${chainID}.`
+      `The collection address could not be found for this network. ChainID: ${chainID}.`
     )
   }
 
@@ -176,7 +211,7 @@ export async function getChainlinkConfig(networkId: string): Promise<ChainlinkCo
   if (config === undefined) {
     throw new NomicLabsHardhatPluginError(
       'Chainlink Configuration',
-      `A Chainlink Config could not be found for this network. ChainID: ${chainID}.`
+      `The chainlink config could not be found for this network. ChainID: ${chainID}.`
     )
   }
 

@@ -25,8 +25,7 @@
     "export": "hardhat export --export-all ./deployments/export.json",
     "flatten": "hardhat flatten",
     "test": "hardhat test",
-    "run": "hardhat run",
-    "setup": "hardhat run scripts/000-setup-contracts.ts",
+    "setup": "hardhat run",
     "coverage": "hardhat coverage"
   },
   "devDependencies": {
