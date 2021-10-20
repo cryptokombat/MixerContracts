@@ -2,7 +2,7 @@ import hre from 'hardhat'
 
 import { getTokenMapping, HeroEdition, mixerConfig, getCollectionAddress } from '../src/config'
 
-import { CryptoKombatMixer, TestERC1155 } from '../typechain'
+import { CryptoKombatMixer, CryptoKombatMixerVRF, TestERC1155 } from '../typechain'
 
 async function main() {
   const { getNamedAccounts, ethers, getChainId } = hre
@@ -12,7 +12,8 @@ async function main() {
   const chainId = await getChainId()
   const collectionAddress = await getCollectionAddress(chainId)
   const collectionInstance = (await ethers.getContractAt('TestERC1155', collectionAddress, signer)) as TestERC1155
-  const mixerInstance = (await ethers.getContract('CryptoKombatMixer', signer)) as CryptoKombatMixer
+  //const mixerInstance = (await ethers.getContract('CryptoKombatMixer', signer)) as CryptoKombatMixer
+  const mixerInstance = (await ethers.getContract('CryptoKombatMixerVRF', signer)) as CryptoKombatMixerVRF
 
   console.log('Collection instance loaded at %s', collectionInstance.address)
   console.log('Mixer instance loaded at %s', mixerInstance.address)
