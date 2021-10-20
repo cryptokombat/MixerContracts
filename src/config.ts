@@ -86,6 +86,14 @@ const bscTokenEditionMapping: TokenMapping = {
   [HeroEdition.COMMON]: [...arrayRange(4, 28, 4), 35],
 }
 
+export const testTokenEditionMapping: TokenMapping = {
+  [HeroEdition.EMPTY]: [...arrayRange(1, 38, 1)],
+  [HeroEdition.GENESIS]: [...arrayRange(1, 28, 4), 32],
+  [HeroEdition.EPIC]: [...arrayRange(2, 28, 4), 33],
+  [HeroEdition.RARE]: [...arrayRange(3, 28, 4), 34],
+  [HeroEdition.COMMON]: [...arrayRange(4, 28, 4), 35],
+}
+
 const tokenMappingByChain: { [networkID in NetworkID]: TokenMapping | undefined } = {
   [NetworkID.MAINNET]: undefined,
   [NetworkID.RINKEBY]: undefined,
