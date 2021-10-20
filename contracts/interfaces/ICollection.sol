@@ -6,6 +6,8 @@ interface ICollection {
 
     function maxSupply(uint256 _id) external view returns (uint256);
 
+    function balanceOf(address account, uint256 id) external view returns (uint256);
+
     function mint(
         address _to,
         uint256 _id,

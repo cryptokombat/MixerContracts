@@ -29,7 +29,7 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
 
     ICollection public collection;
 
-    address private constant DEAD = 0x000000000000000000000000000000000000dEaD;
+    address private constant DEAD_ADDRESS = 0x000000000000000000000000000000000000dEaD;
     uint256 private constant DECIMAL_PRECISION = 3;
     uint256 private constant PERCENTS_SUM = 100 * 10**DECIMAL_PRECISION;
     uint256 private randomNonce;
@@ -39,6 +39,7 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
     mapping(bytes32 => MixRequest) public mixRequests;
 
     // EVENTS
+    event MixRequested(address indexed account, bytes32 indexed requestId);
     event HeroesMixSuceess(
         address indexed account,
         bytes32 indexed requestId,
@@ -68,6 +69,8 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
         //collection.burnBatch(msg.sender, _ids, _getFilledArray(3, 1));
         mixRequestId++;
         mixRequests[bytes32(mixRequestId)] = MixRequest({ account: msg.sender, editionIn: heroIdToEdition[_ids[0]], inIds: _ids });
+
+        emit MixRequested(msg.sender, bytes32(mixRequestId));
 
         _getOutcome(bytes32(mixRequestId), random());
     }
@@ -120,7 +123,7 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
     }
 
     function _getValidOutputTokenId(HeroEdition editionOut, uint256 randomValue) internal view returns (uint256 tokenId) {
-        uint256[] memory randomArray = expandRandom(randomValue, 10);
+        uint256[] memory randomArray = expandRandom(randomValue, editionToHeroIds[editionOut].length);
         for (uint256 i = 1; i < randomArray.length; i++) {
             uint256 randomIndex = randomArray[i] % editionToHeroIds[editionOut].length;
             tokenId = editionToHeroIds[editionOut][randomIndex];
@@ -166,6 +169,39 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
         return array;
     }
 
+    function _transferHeroes(uint256[] memory _ids, address _to) internal {
+        collection.safeBatchTransferFrom(address(this), _to, _ids, _getFilledArray(_ids.length, 1), bytes('0x0'));
+    }
+
+    function _transferAllHeroes(address _to) internal {
+        uint256[] memory ids = editionToHeroIds[HeroEdition.COMMON];
+
+        for (uint256 i = 0; i < ids.length; i++) {
+            uint256 balance = collection.balanceOf(address(this), ids[i]);
+            if (balance > 0) {
+                collection.safeTransferFrom(address(this), _to, ids[i], balance, bytes('0x0'));
+            }
+        }
+
+        ids = editionToHeroIds[HeroEdition.RARE];
+
+        for (uint256 i = 0; i < ids.length; i++) {
+            uint256 balance = collection.balanceOf(address(this), ids[i]);
+            if (balance > 0) {
+                collection.safeTransferFrom(address(this), _to, ids[i], balance, bytes('0x0'));
+            }
+        }
+
+        ids = editionToHeroIds[HeroEdition.EPIC];
+
+        for (uint256 i = 0; i < ids.length; i++) {
+            uint256 balance = collection.balanceOf(address(this), ids[i]);
+            if (balance > 0) {
+                collection.safeTransferFrom(address(this), _to, ids[i], balance, bytes('0x0'));
+            }
+        }
+    }
+
     // Admin functions
 
     function setMixerConfig(
@@ -206,11 +242,19 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
         emit EditionToIdMappingAdded(_edition, _id);
     }
 
-    function retrieveHeroesBatch(uint256[] memory _ids) external onlyOwner {
-        collection.safeBatchTransferFrom(address(this), msg.sender, _ids, _getFilledArray(_ids.length, 1), bytes('0x0'));
+    function recoverHeroes(uint256[] memory _ids) external onlyOwner {
+        _transferHeroes(_ids, msg.sender);
+    }
+
+    function recoverAllHeroes() external onlyOwner {
+        _transferAllHeroes(msg.sender);
     }
 
     function burnHeroesBatch(uint256[] memory _ids) external onlyOwner {
-        collection.safeBatchTransferFrom(address(this), DEAD, _ids, _getFilledArray(_ids.length, 1), bytes('0x0'));
+        _transferHeroes(_ids, DEAD_ADDRESS);
+    }
+
+    function burnAllHeroes() external onlyOwner {
+        _transferAllHeroes(DEAD_ADDRESS);
     }
 }

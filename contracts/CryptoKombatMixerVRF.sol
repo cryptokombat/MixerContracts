@@ -8,8 +8,6 @@ contract CryptoKombatMixerVRF is CryptoKombatMixer, VRFConsumerBase {
     uint256 public chainlinkFee;
     bytes32 internal keyHash;
 
-    event MixRequested(address indexed account, bytes32 indexed requestId);
-
     constructor(
         address coordinator_,
         address link_,
