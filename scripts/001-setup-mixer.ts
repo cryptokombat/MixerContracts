@@ -1,6 +1,6 @@
 import hre from 'hardhat'
 
-import { getTokenMapping, HeroEdition, mixerConfig, getCollectionAddress } from '../src/config'
+import { getTokenMapping, HeroEdition, getCollectionAddress, COMMON_CONFIG, RARE_CONFIG } from '../src/config'
 
 import { CryptoKombatMixer, CryptoKombatMixerVRF, TestERC1155 } from '../typechain'
 
@@ -42,18 +42,11 @@ async function main() {
       await mixerInstance.setEditionToIdMapping(HeroEdition.COMMON, mapping[HeroEdition.COMMON])
       console.log('[Mixer] Set COMMON: %s', JSON.stringify(mapping[HeroEdition.COMMON]))
 
-      await mixerInstance.setMixerConfig(
-        HeroEdition.COMMON,
-        mixerConfig[HeroEdition.COMMON]?.editions,
-        mixerConfig[HeroEdition.COMMON]?.chances
-      )
-      console.log('[Mixer] Set COMMON config: %s', JSON.stringify(mixerConfig[HeroEdition.COMMON]))
+      await mixerInstance.setMixerConfig(HeroEdition.COMMON, COMMON_CONFIG.editions, COMMON_CONFIG.chances)
+      console.log('[Mixer] Set COMMON config: %s', JSON.stringify(COMMON_CONFIG))
 
-      await mixerInstance.setMixerConfig(HeroEdition.RARE, mixerConfig[HeroEdition.RARE]?.editions, mixerConfig[HeroEdition.RARE]?.chances)
-      console.log('[Mixer] Set RARE config: %s', JSON.stringify(mixerConfig[HeroEdition.RARE]))
-
-      await mixerInstance.setMixerConfig(HeroEdition.EPIC, mixerConfig[HeroEdition.EPIC]?.editions, mixerConfig[HeroEdition.EPIC]?.chances)
-      console.log('[Mixer] Set EPIC config: %s', JSON.stringify(mixerConfig[HeroEdition.EPIC]))
+      await mixerInstance.setMixerConfig(HeroEdition.RARE, RARE_CONFIG.editions, RARE_CONFIG.chances)
+      console.log('[Mixer] Set RARE config: %s', JSON.stringify(RARE_CONFIG))
     } else {
       console.log('[Mixer] Token mapping not found.')
     }

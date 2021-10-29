@@ -4,14 +4,13 @@ import hre, { getNamedAccounts, getUnnamedAccounts, ethers } from 'hardhat'
 import { ContractReceipt } from 'ethers'
 import { Address } from 'hardhat-deploy/types'
 
-import { TestERC1155 } from '../typechain/TestERC1155'
-import { CryptoKombatMixer } from '../typechain/CryptoKombatMixer'
 import { getEvent } from './shared/utilities'
-import { createTokenArgs, HeroEdition, mixerConfig, tokenEditionMapping } from '../src/config'
+import { TestERC1155, CryptoKombatMixer } from '../typechain'
 
-const commonMixArray = tokenEditionMapping[HeroEdition.COMMON].slice(0, 3)
-const rareMixArray = tokenEditionMapping[HeroEdition.RARE].slice(0, 3)
-const epicMixArray = tokenEditionMapping[HeroEdition.EPIC].slice(0, 3)
+import { COMMON_CONFIG, createTokenArgs, HeroEdition, mixerConfig, RARE_CONFIG, testTokenEditionMapping } from '../src/config'
+
+const commonMixArray = testTokenEditionMapping[HeroEdition.COMMON].slice(0, 3)
+const rareMixArray = testTokenEditionMapping[HeroEdition.RARE].slice(0, 3)
 
 const totalHits = 200
 const expectedDeviation = (100 / totalHits) * 10 // 10% from total hits
@@ -66,14 +65,13 @@ context('CryptoKombatMixer', () => {
     await collection.grantRole(MINTER_ROLE, mixer.address)
     await collection.setApprovalForAll(mixer.address, true)
 
-    await mixer.setEditionToIdMapping(HeroEdition.GENESIS, tokenEditionMapping[HeroEdition.GENESIS])
-    await mixer.setEditionToIdMapping(HeroEdition.EPIC, tokenEditionMapping[HeroEdition.EPIC])
-    await mixer.setEditionToIdMapping(HeroEdition.RARE, tokenEditionMapping[HeroEdition.RARE])
-    await mixer.setEditionToIdMapping(HeroEdition.COMMON, tokenEditionMapping[HeroEdition.COMMON])
+    await mixer.setEditionToIdMapping(HeroEdition.GENESIS, testTokenEditionMapping[HeroEdition.GENESIS])
+    await mixer.setEditionToIdMapping(HeroEdition.EPIC, testTokenEditionMapping[HeroEdition.EPIC])
+    await mixer.setEditionToIdMapping(HeroEdition.RARE, testTokenEditionMapping[HeroEdition.RARE])
+    await mixer.setEditionToIdMapping(HeroEdition.COMMON, testTokenEditionMapping[HeroEdition.COMMON])
 
-    await mixer.setMixerConfig(HeroEdition.COMMON, mixerConfig[HeroEdition.COMMON]?.editions, mixerConfig[HeroEdition.COMMON]?.chances)
-    await mixer.setMixerConfig(HeroEdition.RARE, mixerConfig[HeroEdition.RARE]?.editions, mixerConfig[HeroEdition.RARE]?.chances)
-    await mixer.setMixerConfig(HeroEdition.EPIC, mixerConfig[HeroEdition.EPIC]?.editions, mixerConfig[HeroEdition.EPIC]?.chances)
+    await mixer.setMixerConfig(HeroEdition.COMMON, COMMON_CONFIG.editions, COMMON_CONFIG.chances)
+    await mixer.setMixerConfig(HeroEdition.RARE, RARE_CONFIG.editions, RARE_CONFIG.chances)
   })
 
   describe('#contructor()', async () => {
@@ -103,11 +101,11 @@ context('CryptoKombatMixer', () => {
         }
       }
       const ref = {
-        common: mixerConfig[HeroEdition.COMMON].chances[0] / 1000,
-        rare: mixerConfig[HeroEdition.COMMON].chances[1] / 1000,
-        epic: mixerConfig[HeroEdition.COMMON].chances[2] / 1000,
+        common: COMMON_CONFIG.chances[2] / 1000,
+        rare: COMMON_CONFIG.chances[1] / 1000,
+        epic: COMMON_CONFIG.chances[0] / 1000,
       }
-      //console.log('[Ref]   COMMON %d, RARE %d, EPIC %d', ref.common, ref.rare, ref.epic)
+      console.log('[Ref]   COMMON %d, RARE %d, EPIC %d', ref.common.toFixed(2), ref.rare.toFixed(2), ref.epic.toFixed(2))
 
       const rates = {
         common: (commonCount / totalHits) * 100,
@@ -115,7 +113,7 @@ context('CryptoKombatMixer', () => {
         epic: (epicCount / totalHits) * 100,
       }
 
-      //console.log('[Rates] COMMON %d, RARE %d, EPIC %d', rates.common, rates.rare, rates.epic)
+      console.log('[Rates] COMMON %d, RARE %d, EPIC %d', rates.common.toFixed(2), rates.rare.toFixed(2), rates.epic.toFixed(2))
 
       const diff = {
         common: {
@@ -132,18 +130,83 @@ context('CryptoKombatMixer', () => {
         },
       }
 
-      // console.log(
-      //   '[Diff]  COMMON %d-%d, RARE %d-%d, EPIC %d-%d',
-      //   diff.common.from,
-      //   diff.common.to,
-      //   diff.rare.from,
-      //   diff.rare.to,
-      //   diff.epic.from,
-      //   diff.epic.to
-      // )
+      console.log(
+        '[Diff]  COMMON %d-%d, RARE %d-%d, EPIC %d-%d',
+        diff.common.from.toFixed(2),
+        diff.common.to.toFixed(2),
+        diff.rare.from.toFixed(2),
+        diff.rare.to.toFixed(2),
+        diff.epic.from.toFixed(2),
+        diff.epic.to.toFixed(2)
+      )
       expect(rates.common).to.be.within(diff.common.from, diff.common.to)
       expect(rates.rare).to.be.within(diff.rare.from, diff.rare.to)
       expect(rates.epic).to.be.within(diff.epic.from, diff.epic.to)
+      expect(epicCount + rareCount + commonCount).to.be.eq(totalHits)
+    })
+
+    it('Mix 3 rare heroes, check rates', async () => {
+      let epicCount = 0
+      let rareCount = 0
+      let commonCount = 0
+
+      for (let i = 0; i < totalHits; i++) {
+        const tx = await mixer.mixHeroes(rareMixArray)
+        const receipt: ContractReceipt = await tx.wait()
+        const event = getEvent(receipt, mixer.address, 'HeroesMixSuceess')
+        if (event && event.args && event.args.editionOut === HeroEdition.COMMON) {
+          commonCount++
+        }
+        if (event && event.args && event.args.editionOut === HeroEdition.RARE) {
+          rareCount++
+        }
+        if (event && event.args && event.args.editionOut === HeroEdition.EPIC) {
+          epicCount++
+        }
+      }
+      const ref = {
+        common: RARE_CONFIG.chances[0] / 1000,
+        rare: RARE_CONFIG.chances[2] / 1000,
+        epic: RARE_CONFIG.chances[1] / 1000,
+      }
+      console.log('[Ref] COMMON %d, RARE %d, EPIC %d', ref.common.toFixed(2), ref.rare.toFixed(2), ref.epic.toFixed(2))
+
+      const rates = {
+        common: (commonCount / totalHits) * 100,
+        rare: (rareCount / totalHits) * 100,
+        epic: (epicCount / totalHits) * 100,
+      }
+
+      console.log('[Rates] COMMON %d, RARE %d, EPIC %d', rates.common.toFixed(2), rates.rare.toFixed(2), rates.epic.toFixed(2))
+
+      const diff = {
+        common: {
+          from: ref.common - expectedDeviation > 0 ? ref.common - expectedDeviation : 0,
+          to: ref.common + expectedDeviation,
+        },
+        rare: {
+          from: ref.rare - expectedDeviation > 0 ? ref.rare - expectedDeviation : 0,
+          to: ref.rare + expectedDeviation,
+        },
+        epic: {
+          from: ref.epic - expectedDeviation > 0 ? ref.epic - expectedDeviation : 0,
+          to: ref.epic + expectedDeviation,
+        },
+      }
+
+      console.log(
+        '[Diff]  COMMON %d-%d, RARE %d-%d, EPIC %d-%d',
+        diff.common.from.toFixed(2),
+        diff.common.to.toFixed(2),
+        diff.rare.from.toFixed(2),
+        diff.rare.to.toFixed(2),
+        diff.epic.from.toFixed(2),
+        diff.epic.to.toFixed(2)
+      )
+      expect(rates.common).to.be.within(diff.common.from, diff.common.to)
+      expect(rates.rare).to.be.within(diff.rare.from, diff.rare.to)
+      expect(rates.epic).to.be.within(diff.epic.from, diff.epic.to)
+      expect(epicCount + rareCount + commonCount).to.be.eq(totalHits)
     })
   })
 })

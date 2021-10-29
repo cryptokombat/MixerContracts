@@ -25,6 +25,24 @@ export enum NetworkID {
   //ARBITRUM_ONE = 42161,
 }
 
+export enum HeroEdition {
+  EMPTY,
+  GENESIS,
+  EPIC,
+  RARE,
+  COMMON,
+}
+
+export const COMMON_CONFIG = {
+  editions: [HeroEdition.EPIC, HeroEdition.RARE, HeroEdition.COMMON],
+  chances: [3700, 36600, 59700],
+  //chances: [5000, 35000, 60000],
+}
+export const RARE_CONFIG = {
+  editions: [HeroEdition.COMMON, HeroEdition.EPIC, HeroEdition.RARE],
+  chances: [9700, 34700, 55600],
+}
+
 const collectionAddress: { [networkID in NetworkID]: string } = {
   [NetworkID.MAINNET]: '0x0',
   [NetworkID.RINKEBY]: '0xea0144115c9F722f26963aCC6d564Cee8Bd77F76',
@@ -33,14 +51,6 @@ const collectionAddress: { [networkID in NetworkID]: string } = {
   [NetworkID.BSC_TESTNET]: '0x611477c54F8f2dA620Ea0A3B44729929c6C91a27',
   [NetworkID.POLYGON]: '0x0',
   [NetworkID.POLYGON_MUMBAI]: '0x9e96d6047308E07C331C2EcB7Acb538A3AAD493a',
-}
-
-export enum HeroEdition {
-  EMPTY,
-  GENESIS,
-  EPIC,
-  RARE,
-  COMMON,
 }
 
 const maxTokenId = 32
@@ -109,27 +119,12 @@ export interface MixerConfig {
   chances: number[]
 }
 
-export const mixerConfig: { [editionId in HeroEdition]: MixerConfig } = {
-  [HeroEdition.EMPTY]: {
-    editions: [HeroEdition.COMMON, HeroEdition.RARE, HeroEdition.EPIC],
-    chances: [59700, 36600, 3700],
-  },
-  [HeroEdition.GENESIS]: {
-    editions: [HeroEdition.COMMON, HeroEdition.RARE, HeroEdition.EPIC],
-    chances: [59700, 36600, 3700],
-  },
-  [HeroEdition.EPIC]: {
-    editions: [HeroEdition.COMMON, HeroEdition.RARE, HeroEdition.EPIC],
-    chances: [59700, 36600, 3700],
-  },
-  [HeroEdition.RARE]: {
-    editions: [HeroEdition.COMMON, HeroEdition.RARE, HeroEdition.EPIC],
-    chances: [59700, 36600, 3700],
-  },
-  [HeroEdition.COMMON]: {
-    editions: [HeroEdition.COMMON, HeroEdition.RARE, HeroEdition.EPIC],
-    chances: [59700, 36600, 3700],
-  },
+export const mixerConfig: { [editionId in HeroEdition]: MixerConfig | undefined } = {
+  [HeroEdition.EMPTY]: undefined,
+  [HeroEdition.GENESIS]: undefined,
+  [HeroEdition.EPIC]: undefined,
+  [HeroEdition.RARE]: RARE_CONFIG,
+  [HeroEdition.COMMON]: COMMON_CONFIG,
 }
 
 export async function getTokenMapping(networkId: string): Promise<TokenMapping | undefined> {
