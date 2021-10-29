@@ -23,6 +23,7 @@ contract CryptoKombatMixerVRF is CryptoKombatMixer, VRFConsumerBase {
         require(LINK.balanceOf(address(this)) >= chainlinkFee, 'CryptoKombatMixer: Not enough LINK');
         require(_ids.length == 3, 'CryptoKombatMixer: Incorrect input length');
         require(isSameEditions(_ids), 'CryptoKombatMixer: Input editions are not same');
+        require(isConfigExists(heroIdToEdition[_ids[0]]), 'CryptoKombatMixer: Mixer config does not exist');
 
         collection.safeBatchTransferFrom(msg.sender, address(this), _ids, _getFilledArray(_ids.length, 1), bytes('0x0'));
 

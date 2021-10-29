@@ -6,8 +6,6 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol';
 import './interfaces/ICollection.sol';
 
-import 'hardhat/console.sol';
-
 contract CryptoKombatMixer is ERC1155Holder, Ownable {
     enum HeroEdition {
         EMPTY,
@@ -23,7 +21,13 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
         uint256[] inIds;
     }
 
-    mapping(HeroEdition => mapping(HeroEdition => uint256)) public mixerConfigs;
+    struct MixYield {
+        HeroEdition edition;
+        uint256 chance;
+    }
+
+    mapping(HeroEdition => MixYield[]) public mixerConfigs;
+    mapping(HeroEdition => bool) public mixerConfigExists;
     mapping(uint256 => HeroEdition) public heroIdToEdition;
     mapping(HeroEdition => uint256[]) public editionToHeroIds;
 
@@ -63,7 +67,7 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
     function mixHeroes(uint256[] memory _ids) external virtual {
         require(_ids.length == 3, 'CryptoKombatMixer: Incorrect input length');
         require(isSameEditions(_ids), 'CryptoKombatMixer: Input editions are not same');
-        //console.log('input ', _ids[0], _ids[1], _ids[2]);
+        require(isConfigExists(heroIdToEdition[_ids[0]]), 'CryptoKombatMixer: Mixer config does not exist');
 
         collection.safeBatchTransferFrom(msg.sender, address(this), _ids, _getFilledArray(_ids.length, 1), bytes('0x0'));
         //collection.burnBatch(msg.sender, _ids, _getFilledArray(3, 1));
@@ -80,33 +84,11 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
     function _getOutcome(bytes32 requestId, uint256 randomValue) internal {
         MixRequest memory mixRequest = mixRequests[requestId];
 
-        uint256 randomChance = randomValue % PERCENTS_SUM;
-
-        //console.log('randomValue ', randomValue);
-        //console.log('randomChance ', randomChance);
-
-        uint256 epicChance = mixerConfigs[mixRequest.editionIn][HeroEdition.EPIC];
-        uint256 rareChance = mixerConfigs[mixRequest.editionIn][HeroEdition.RARE];
-        //uint256 commonChance = mixerConfigs[mixRequest.editionIn][HeroEdition.EPIC];
-        //console.log('epicChance ', epicChance);
-        //console.log('rareChance ', rareChance);
-        HeroEdition editionOut;
-
-        if (randomChance <= epicChance) {
-            editionOut = HeroEdition.EPIC;
-        } else if (randomChance > epicChance && randomChance <= rareChance) {
-            editionOut = HeroEdition.RARE;
-        } else {
-            editionOut = HeroEdition.COMMON;
-        }
-        //console.log('editionOut ', uint8(editionOut));
-
+        HeroEdition editionOut = _getOutputEdition(mixRequest.editionIn, randomValue);
         uint256 tokenId = _getValidOutputTokenId(editionOut, randomValue);
-        //console.log('tokenId ', tokenId);
 
         if (tokenId > 0) {
             collection.mint(mixRequest.account, tokenId, 1, bytes('0x0'));
-            //collection.burnBatch(address(this), mixRequest.inIds, _getFilledArray(mixRequest.inIds.length, 1));
 
             emit HeroesMixSuceess(mixRequest.account, requestId, mixRequest.editionIn, editionOut, tokenId);
         } else {
@@ -120,6 +102,20 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
             emit HeroesMixReverted(mixRequest.account, requestId, mixRequest.editionIn);
         }
         delete mixRequests[requestId];
+    }
+
+    function _getOutputEdition(HeroEdition editionIn, uint256 randomValue) internal view returns (HeroEdition editionOut) {
+        uint256 randomChance = randomValue % PERCENTS_SUM;
+
+        for (uint256 i = mixerConfigs[editionIn].length - 1; i > 0; i--) {
+            uint256 checkChance = mixerConfigs[editionIn][i].chance;
+            if (randomChance < checkChance) {
+                return mixerConfigs[editionIn][i].edition;
+            } else {
+                randomChance = randomChance - checkChance;
+            }
+        }
+        return mixerConfigs[editionIn][0].edition;
     }
 
     function _getValidOutputTokenId(HeroEdition editionOut, uint256 randomValue) internal view returns (uint256 tokenId) {
@@ -146,6 +142,10 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
             _prevEdition = _currentEdition;
         }
         return true;
+    }
+
+    function isConfigExists(HeroEdition _edition) internal view returns (bool) {
+        return mixerConfigExists[_edition];
     }
 
     function random() private returns (uint256) {
@@ -204,6 +204,16 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
 
     // Admin functions
 
+    /*
+        Set mixer config, chances should be in increasing order
+        
+        For COMMON in
+        - [EPIC,RARE,COMMON] [3700,36600,59700]
+        For RARE in
+        - [COMMON,EPIC,RARE] [9700,34700,55600]
+        
+        Sum should be eq DECIMAL_PRECISION       
+    */
     function setMixerConfig(
         HeroEdition _in,
         HeroEdition[] memory _out,
@@ -212,12 +222,25 @@ contract CryptoKombatMixer is ERC1155Holder, Ownable {
         require(_out.length == _chances.length, 'CryptoKombatMixer: Params length mismatch');
 
         uint256 sum;
+        uint256 prevChance;
+
         for (uint256 i = 0; i < _chances.length; i++) {
+            require(_chances[i] > prevChance, 'CryptoKombatMixer: Chances should be in increasing order');
+            prevChance = _chances[i];
             sum += _chances[i];
-            mixerConfigs[_in][_out[i]] = _chances[i];
+
+            if (mixerConfigs[_in].length > i) {
+                mixerConfigs[_in][i] = MixYield({ edition: _out[i], chance: _chances[i] });
+            } else {
+                mixerConfigs[_in].push(MixYield({ edition: _out[i], chance: _chances[i] }));
+            }
         }
 
         require(sum <= PERCENTS_SUM, 'CryptoKombatMixer: Chances sum exceed 100%');
+
+        if (!mixerConfigExists[_in]) {
+            mixerConfigExists[_in] = true;
+        }
 
         emit MixerConfigSet(_in, _out, _chances);
     }
