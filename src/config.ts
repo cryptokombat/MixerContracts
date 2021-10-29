@@ -88,12 +88,21 @@ const polygonTokenEditionMapping: TokenMapping = {
   [HeroEdition.COMMON]: commonTokenIds,
 }
 
+// BSC PROD
+// const bscTokenEditionMapping: TokenMapping = {
+//   [HeroEdition.EMPTY]: [...arrayRange(1, 38, 1)],
+//   [HeroEdition.GENESIS]: [...arrayRange(1, 28, 4), 32, 36],
+//   [HeroEdition.EPIC]: [...arrayRange(2, 28, 4), 33, 37],
+//   [HeroEdition.RARE]: [...arrayRange(3, 28, 4), 34, 38],
+//   [HeroEdition.COMMON]: [...arrayRange(4, 28, 4), 35, 39],
+// }
+// BSC UAT
 const bscTokenEditionMapping: TokenMapping = {
   [HeroEdition.EMPTY]: [...arrayRange(1, 38, 1)],
-  [HeroEdition.GENESIS]: [...arrayRange(1, 28, 4), 32],
-  [HeroEdition.EPIC]: [...arrayRange(2, 28, 4), 33],
-  [HeroEdition.RARE]: [...arrayRange(3, 28, 4), 34],
-  [HeroEdition.COMMON]: [...arrayRange(4, 28, 4), 35],
+  [HeroEdition.GENESIS]: [...arrayRange(1, 28, 4), 32, 39],
+  [HeroEdition.EPIC]: [...arrayRange(2, 28, 4), 33, 40],
+  [HeroEdition.RARE]: [...arrayRange(3, 28, 4), 34, 41],
+  [HeroEdition.COMMON]: [...arrayRange(4, 28, 4), 35, 42],
 }
 
 export const testTokenEditionMapping: TokenMapping = {
