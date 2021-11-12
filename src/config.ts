@@ -47,7 +47,7 @@ const collectionAddress: { [networkID in NetworkID]: string } = {
   [NetworkID.MAINNET]: '0x0',
   [NetworkID.RINKEBY]: '0xea0144115c9F722f26963aCC6d564Cee8Bd77F76',
   [NetworkID.KOVAN]: '0x0',
-  [NetworkID.BSC]: '0x0',
+  [NetworkID.BSC]: '0x93e6f7264033dC2210919c4E3feE065313015109',
   [NetworkID.BSC_TESTNET]: '0x611477c54F8f2dA620Ea0A3B44729929c6C91a27',
   [NetworkID.POLYGON]: '0x0',
   [NetworkID.POLYGON_MUMBAI]: '0x9e96d6047308E07C331C2EcB7Acb538A3AAD493a',
@@ -89,15 +89,15 @@ const polygonTokenEditionMapping: TokenMapping = {
 }
 
 // BSC PROD
-// const bscTokenEditionMapping: TokenMapping = {
-//   [HeroEdition.EMPTY]: [...arrayRange(1, 38, 1)],
-//   [HeroEdition.GENESIS]: [...arrayRange(1, 28, 4), 32, 36],
-//   [HeroEdition.EPIC]: [...arrayRange(2, 28, 4), 33, 37],
-//   [HeroEdition.RARE]: [...arrayRange(3, 28, 4), 34, 38],
-//   [HeroEdition.COMMON]: [...arrayRange(4, 28, 4), 35, 39],
-// }
-// BSC UAT
 const bscTokenEditionMapping: TokenMapping = {
+  [HeroEdition.EMPTY]: [...arrayRange(1, 38, 1)],
+  [HeroEdition.GENESIS]: [...arrayRange(1, 28, 4), 32, 36],
+  [HeroEdition.EPIC]: [...arrayRange(2, 28, 4), 33, 37],
+  [HeroEdition.RARE]: [...arrayRange(3, 28, 4), 34, 38],
+  [HeroEdition.COMMON]: [...arrayRange(4, 28, 4), 35, 39],
+}
+// BSC UAT
+const bscTestTokenEditionMapping: TokenMapping = {
   [HeroEdition.EMPTY]: [...arrayRange(1, 38, 1)],
   [HeroEdition.GENESIS]: [...arrayRange(1, 28, 4), 32, 39],
   [HeroEdition.EPIC]: [...arrayRange(2, 28, 4), 33, 40],
@@ -117,8 +117,8 @@ const tokenMappingByChain: { [networkID in NetworkID]: TokenMapping | undefined 
   [NetworkID.MAINNET]: undefined,
   [NetworkID.RINKEBY]: undefined,
   [NetworkID.KOVAN]: undefined,
-  [NetworkID.BSC]: undefined,
-  [NetworkID.BSC_TESTNET]: bscTokenEditionMapping,
+  [NetworkID.BSC]: bscTokenEditionMapping,
+  [NetworkID.BSC_TESTNET]: bscTestTokenEditionMapping,
   [NetworkID.POLYGON]: undefined,
   [NetworkID.POLYGON_MUMBAI]: polygonTokenEditionMapping,
 }

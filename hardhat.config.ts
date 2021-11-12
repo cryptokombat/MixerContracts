@@ -39,9 +39,10 @@ const config: HardhatUserConfig = {
       accounts: [TESTNET_DEPLOYER_PK],
     },
     bsc: {
-      url: `https://bsc-dataseed.binance.org`,
+      url: `https://bsc-dataseed1.binance.org`,
       saveDeployments: true,
       accounts: [MAINNET_DEPLOYER_PK],
+      //gasPrice: 6000000000,
     },
     bsctest: {
       url: `https://data-seed-prebsc-2-s3.binance.org:8545`,

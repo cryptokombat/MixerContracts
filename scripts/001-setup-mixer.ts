@@ -24,29 +24,29 @@ async function main() {
   if (edition === 0) {
     console.log('[Mixer] Setting data...')
 
-    console.log('[Collection] Setting minter role...')
-    await collectionInstance.grantRole(minterRole, mixerInstance.address)
+    let tx = await collectionInstance.grantRole(minterRole, mixerInstance.address)
+    console.log('[Collection] Setting minter role...', tx.hash)
 
     const mapping = await getTokenMapping(chainId)
 
     if (mapping) {
-      await mixerInstance.setEditionToIdMapping(HeroEdition.GENESIS, mapping[HeroEdition.GENESIS])
-      console.log('[Mixer] Set GENESIS: %s', JSON.stringify(mapping[HeroEdition.GENESIS]))
+      tx = await mixerInstance.setEditionToIdMapping(HeroEdition.GENESIS, mapping[HeroEdition.GENESIS])
+      console.log('[Mixer] Set GENESIS: %s', JSON.stringify(mapping[HeroEdition.GENESIS]), tx.hash)
 
-      await mixerInstance.setEditionToIdMapping(HeroEdition.EPIC, mapping[HeroEdition.EPIC])
-      console.log('[Mixer] Set EPIC: %s', JSON.stringify(mapping[HeroEdition.EPIC]))
+      tx = await mixerInstance.setEditionToIdMapping(HeroEdition.EPIC, mapping[HeroEdition.EPIC])
+      console.log('[Mixer] Set EPIC: %s', JSON.stringify(mapping[HeroEdition.EPIC]), tx.hash)
 
-      await mixerInstance.setEditionToIdMapping(HeroEdition.RARE, mapping[HeroEdition.RARE])
-      console.log('[Mixer] Set RARE: %s', JSON.stringify(mapping[HeroEdition.RARE]))
+      tx = await mixerInstance.setEditionToIdMapping(HeroEdition.RARE, mapping[HeroEdition.RARE])
+      console.log('[Mixer] Set RARE: %s', JSON.stringify(mapping[HeroEdition.RARE]), tx.hash)
 
-      await mixerInstance.setEditionToIdMapping(HeroEdition.COMMON, mapping[HeroEdition.COMMON])
-      console.log('[Mixer] Set COMMON: %s', JSON.stringify(mapping[HeroEdition.COMMON]))
+      tx = await mixerInstance.setEditionToIdMapping(HeroEdition.COMMON, mapping[HeroEdition.COMMON])
+      console.log('[Mixer] Set COMMON: %s', JSON.stringify(mapping[HeroEdition.COMMON]), tx.hash)
 
-      await mixerInstance.setMixerConfig(HeroEdition.COMMON, COMMON_CONFIG.editions, COMMON_CONFIG.chances)
-      console.log('[Mixer] Set COMMON config: %s', JSON.stringify(COMMON_CONFIG))
+      tx = await mixerInstance.setMixerConfig(HeroEdition.COMMON, COMMON_CONFIG.editions, COMMON_CONFIG.chances)
+      console.log('[Mixer] Set COMMON config: %s', JSON.stringify(COMMON_CONFIG), tx.hash)
 
-      await mixerInstance.setMixerConfig(HeroEdition.RARE, RARE_CONFIG.editions, RARE_CONFIG.chances)
-      console.log('[Mixer] Set RARE config: %s', JSON.stringify(RARE_CONFIG))
+      tx = await mixerInstance.setMixerConfig(HeroEdition.RARE, RARE_CONFIG.editions, RARE_CONFIG.chances)
+      console.log('[Mixer] Set RARE config: %s', JSON.stringify(RARE_CONFIG), tx.hash)
     } else {
       console.log('[Mixer] Token mapping not found.')
     }
