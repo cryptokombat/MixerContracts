@@ -99,10 +99,10 @@ const bscTokenEditionMapping: TokenMapping = {
 // BSC UAT
 const bscTestTokenEditionMapping: TokenMapping = {
   [HeroEdition.EMPTY]: [...arrayRange(1, 38, 1)],
-  [HeroEdition.GENESIS]: [...arrayRange(1, 28, 4), 32, 39],
-  [HeroEdition.EPIC]: [...arrayRange(2, 28, 4), 33, 40],
-  [HeroEdition.RARE]: [...arrayRange(3, 28, 4), 34, 41],
-  [HeroEdition.COMMON]: [...arrayRange(4, 28, 4), 35, 42],
+  [HeroEdition.GENESIS]: [...arrayRange(1, 28, 4), 32, 39, 43],
+  [HeroEdition.EPIC]: [...arrayRange(2, 28, 4), 33, 40, 44],
+  [HeroEdition.RARE]: [...arrayRange(3, 28, 4), 34, 41, 45],
+  [HeroEdition.COMMON]: [...arrayRange(4, 28, 4), 35, 42, 46],
 }
 
 export const testTokenEditionMapping: TokenMapping = {
