@@ -123,6 +123,16 @@ const tokenMappingByChain: { [networkID in NetworkID]: TokenMapping | undefined 
   [NetworkID.POLYGON_MUMBAI]: polygonTokenEditionMapping,
 }
 
+export const xmasTokenIdByChain: { [networkID in NetworkID]: number | undefined } = {
+  [NetworkID.MAINNET]: 74,
+  [NetworkID.RINKEBY]: 74,
+  [NetworkID.KOVAN]: undefined,
+  [NetworkID.BSC]: 48,
+  [NetworkID.BSC_TESTNET]: 48,
+  [NetworkID.POLYGON]: undefined,
+  [NetworkID.POLYGON_MUMBAI]: undefined,
+}
+
 export interface MixerConfig {
   editions: HeroEdition[]
   chances: number[]
@@ -161,6 +171,18 @@ export async function getCollectionAddress(networkId: string): Promise<string> {
   }
 
   return address
+}
+
+export async function getXmasTokenId(networkId: string): Promise<number> {
+  const chainID = parseInt(networkId) as NetworkID
+
+  const tokenId = xmasTokenIdByChain[chainID]
+
+  if (tokenId === undefined) {
+    throw new NomicLabsHardhatPluginError('Xmas Token ID', `Xmas Token ID could not be found for this network. ChainID: ${chainID}.`)
+  }
+
+  return tokenId
 }
 
 export interface ChainlinkConfig {

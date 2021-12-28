@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Crypto Kombat Mixer Contracts",
   "engines": {
-    "node": "12.x"
+    "node": "14.x"
   },
   "private": true,
   "repository": {
