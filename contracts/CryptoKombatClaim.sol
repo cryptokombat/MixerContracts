@@ -7,9 +7,9 @@ import './interfaces/ICollection.sol';
 contract CryptoKombatClaim is Ownable {
     ICollection public collection;
 
-    uint256 public immutable CLAIM_START;
-    uint256 public immutable CLAIM_END;
-    uint256 public immutable HERO_ID;
+    uint256 public CLAIM_START;
+    uint256 public CLAIM_END;
+    uint256 public HERO_ID;
 
     mapping(address => bool) public isClaimed;
 
@@ -47,5 +47,16 @@ contract CryptoKombatClaim is Ownable {
         collection.mint(msg.sender, HERO_ID, 1, bytes('0x0'));
 
         emit Claimed(msg.sender);
+    }
+
+    // Admin functions
+
+    function setStartEnd(uint256 _start, uint256 _end) external onlyOwner {
+        require(_start != 0, '!zero');
+        require(_end != 0, '!zero');
+        require(_start < _end, '!time');
+
+        CLAIM_START = _start;
+        CLAIM_END = _end;
     }
 }
