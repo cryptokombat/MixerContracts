@@ -1,11 +1,13 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import '@openzeppelin/contracts/access/Ownable.sol';
-import './interfaces/ICollection.sol';
+import '@openzeppelin/contracts/utils/Context.sol';
+import './interfaces/ICollectionMint.sol';
 
-contract CryptoKombatClaim is Ownable {
-    ICollection public collection;
+contract CryptoKombatClaim is Context {
+    address public owner;
+
+    ICollectionMint public collection;
 
     uint256 public CLAIM_START;
     uint256 public CLAIM_END;
@@ -29,24 +31,32 @@ contract CryptoKombatClaim is Ownable {
         require(_end != 0, '!zero');
         require(_start < _end, '!time');
 
-        collection = ICollection(_collection);
+        owner = _msgSender();
+        collection = ICollectionMint(_collection);
         CLAIM_START = _start;
         CLAIM_END = _end;
         HERO_ID = _heroId;
     }
 
+    // Modifiers
+    modifier onlyOwner() {
+        require(owner == _msgSender(), '!owner');
+        _;
+    }
+
     // PUBLIC FUNCTIONS
 
     function claim() external {
-        require(!isClaimed[msg.sender], '!claimed');
+        require(!isClaimed[_msgSender()], '!claimed');
         require(block.timestamp >= CLAIM_START, '!start');
         require(block.timestamp <= CLAIM_END, '!end');
+        require(tx.origin == _msgSender(), '!eoa');
 
-        isClaimed[msg.sender] = true;
+        isClaimed[_msgSender()] = true;
 
-        collection.mint(msg.sender, HERO_ID, 1, bytes('0x0'));
+        collection.mint(_msgSender(), HERO_ID, 1, bytes('0x0'));
 
-        emit Claimed(msg.sender);
+        emit Claimed(_msgSender());
     }
 
     // Admin functions
