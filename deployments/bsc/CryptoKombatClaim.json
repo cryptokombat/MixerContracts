@@ -1,0 +1,270 @@
+{
+  "address": "0x1d6Ce769E63287Bb92AB333CE3E0892D24e27B51",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_collection",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_heroId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_start",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_end",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "Claimed",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "CLAIM_END",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "CLAIM_START",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "HERO_ID",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "claim",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "collection",
+      "outputs": [
+        {
+          "internalType": "contract ICollectionMint",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "isClaimed",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_start",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_end",
+          "type": "uint256"
+        }
+      ],
+      "name": "setStartEnd",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x518d84770d48fef882bb2bfd54f52586096c77338f19d27588867febe1e9ef93",
+  "receipt": {
+    "to": null,
+    "from": "0x6eFF8897098F418913341d606231f7Cbce1910Dd",
+    "contractAddress": "0x1d6Ce769E63287Bb92AB333CE3E0892D24e27B51",
+    "transactionIndex": 181,
+    "gasUsed": "442123",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xcc9dac95f94ae3790664651f517219511028152a08737fbd72de99b78832a5b9",
+    "transactionHash": "0x518d84770d48fef882bb2bfd54f52586096c77338f19d27588867febe1e9ef93",
+    "logs": [],
+    "blockNumber": 13948268,
+    "cumulativeGasUsed": "26323422",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0x93e6f7264033dC2210919c4E3feE065313015109",
+    47,
+    1640952000,
+    1642161600
+  ],
+  "solcInputHash": "8d22b84087023acdde55c90c63a78cfa",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.4+commit.c7e474f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_collection\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_heroId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_end\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Claimed\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"CLAIM_END\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"CLAIM_START\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"HERO_ID\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"claim\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"collection\",\"outputs\":[{\"internalType\":\"contract ICollectionMint\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"isClaimed\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_end\",\"type\":\"uint256\"}],\"name\":\"setStartEnd\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/CryptoKombatClaim.sol\":\"CryptoKombatClaim\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.0;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n}\\n\",\"keccak256\":\"0x90565a39ae45c80f0468dc96c7b20d0afc3055f344c8203a0c9258239f350b9f\",\"license\":\"MIT\"},\"contracts/CryptoKombatClaim.sol\":{\"content\":\"//SPDX-License-Identifier: MIT\\npragma solidity ^0.8.4;\\n\\nimport '@openzeppelin/contracts/utils/Context.sol';\\nimport './interfaces/ICollectionMint.sol';\\n\\ncontract CryptoKombatClaim is Context {\\n    address public owner;\\n\\n    ICollectionMint public collection;\\n\\n    uint256 public CLAIM_START;\\n    uint256 public CLAIM_END;\\n    uint256 public HERO_ID;\\n\\n    mapping(address => bool) public isClaimed;\\n\\n    // EVENTS\\n    event Claimed(address indexed account);\\n\\n    // CONSTRUCTOR\\n    constructor(\\n        address _collection,\\n        uint256 _heroId,\\n        uint256 _start,\\n        uint256 _end\\n    ) {\\n        require(_collection != address(0), '!zero');\\n        require(_heroId != 0, '!zero');\\n        require(_start != 0, '!zero');\\n        require(_end != 0, '!zero');\\n        require(_start < _end, '!time');\\n\\n        owner = _msgSender();\\n        collection = ICollectionMint(_collection);\\n        CLAIM_START = _start;\\n        CLAIM_END = _end;\\n        HERO_ID = _heroId;\\n    }\\n\\n    // Modifiers\\n    modifier onlyOwner() {\\n        require(owner == _msgSender(), '!owner');\\n        _;\\n    }\\n\\n    // PUBLIC FUNCTIONS\\n\\n    function claim() external {\\n        require(!isClaimed[_msgSender()], '!claimed');\\n        require(block.timestamp >= CLAIM_START, '!start');\\n        require(block.timestamp <= CLAIM_END, '!end');\\n        require(tx.origin == _msgSender(), '!eoa');\\n\\n        isClaimed[_msgSender()] = true;\\n\\n        collection.mint(_msgSender(), HERO_ID, 1, bytes('0x0'));\\n\\n        emit Claimed(_msgSender());\\n    }\\n\\n    // Admin functions\\n\\n    function setStartEnd(uint256 _start, uint256 _end) external onlyOwner {\\n        require(_start != 0, '!zero');\\n        require(_end != 0, '!zero');\\n        require(_start < _end, '!time');\\n\\n        CLAIM_START = _start;\\n        CLAIM_END = _end;\\n    }\\n}\\n\",\"keccak256\":\"0x6cff1547a2dfddb70a0e7ccebd5eecdd6cd858eb164f39a4a1bdf154fbd90811\",\"license\":\"MIT\"},\"contracts/interfaces/ICollectionMint.sol\":{\"content\":\"//SPDX-License-Identifier: MIT\\npragma solidity ^0.8.4;\\n\\ninterface ICollectionMint {\\n    function mint(\\n        address _to,\\n        uint256 _id,\\n        uint256 _quantity,\\n        bytes memory _data\\n    ) external;\\n}\\n\",\"keccak256\":\"0x1eea84f9ad6c30e7538e3ad2c713ea9c00844dcfd351ef6460a34e4d86426647\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506040516106eb3803806106eb83398101604081905261002f91610188565b6001600160a01b0384166100725760405162461bcd60e51b8152602060048201526005602482015264217a65726f60d81b60448201526064015b60405180910390fd5b826100a75760405162461bcd60e51b8152602060048201526005602482015264217a65726f60d81b6044820152606401610069565b816100dc5760405162461bcd60e51b8152602060048201526005602482015264217a65726f60d81b6044820152606401610069565b806101115760405162461bcd60e51b8152602060048201526005602482015264217a65726f60d81b6044820152606401610069565b8082106101485760405162461bcd60e51b81526020600482015260056024820152642174696d6560d81b6044820152606401610069565b600080546001600160a01b03199081163317909155600180549091166001600160a01b0395909516949094179093556002556003919091556004556101d1565b6000806000806080858703121561019d578384fd5b84516001600160a01b03811681146101b3578485fd5b60208601516040870151606090970151919890975090945092505050565b61050b806101e06000396000f3fe608060405234801561001057600080fd5b50600436106100885760003560e01c80637de1e5361161005b5780637de1e536146100cf5780638cc08025146100fa5780638da5cb5b1461012d578063bf39d9961461014057600080fd5b8063132184461461008d5780634e71d92d146100a2578063701815c5146100aa5780637a9849dd146100c6575b600080fd5b6100a061009b366004610443565b610149565b005b6100a061023d565b6100b360035481565b6040519081526020015b60405180910390f35b6100b360025481565b6001546100e2906001600160a01b031681565b6040516001600160a01b0390911681526020016100bd565b61011d610108366004610415565b60056020526000908152604090205460ff1681565b60405190151581526020016100bd565b6000546100e2906001600160a01b031681565b6100b360045481565b6000546001600160a01b031633146101915760405162461bcd60e51b815260206004820152600660248201526510b7bbb732b960d11b60448201526064015b60405180910390fd5b816101c65760405162461bcd60e51b8152602060048201526005602482015264217a65726f60d81b6044820152606401610188565b806101fb5760405162461bcd60e51b8152602060048201526005602482015264217a65726f60d81b6044820152606401610188565b8082106102325760405162461bcd60e51b81526020600482015260056024820152642174696d6560d81b6044820152606401610188565b600291909155600355565b3360009081526005602052604090205460ff16156102885760405162461bcd60e51b81526020600482015260086024820152670858db185a5b595960c21b6044820152606401610188565b6002544210156102c35760405162461bcd60e51b8152602060048201526006602482015265085cdd185c9d60d21b6044820152606401610188565b6003544211156102fe5760405162461bcd60e51b81526004016101889060208082526004908201526308595b9960e21b604082015260600190565b3233146103365760405162461bcd60e51b81526004016101889060208082526004908201526321656f6160e01b604082015260600190565b33600081815260056020908152604091829020805460ff1916600190811790915580546004805485518087018752600381526203078360ec1b95810195909552945163731133e960e01b81526001600160a01b03929092169563731133e9956103a59591949093909201610464565b600060405180830381600087803b1580156103bf57600080fd5b505af11580156103d3573d6000803e3d6000fd5b505050506103de3390565b6001600160a01b03167fb449c24d261a59627b537c8c41c57ab559f4205c56bea745ff61c5521bece21460405160405180910390a2565b600060208284031215610426578081fd5b81356001600160a01b038116811461043c578182fd5b9392505050565b60008060408385031215610455578081fd5b50508035926020909101359150565b60018060a01b0385168152600060208581840152846040840152608060608401528351806080850152825b818110156104ab5785810183015185820160a00152820161048f565b818111156104bc578360a083870101525b50601f01601f19169290920160a001969550505050505056fea2646970667358221220dd0db7ecd9de5a642cc691908d2fbf2b0ceab9c2bc0700356dceba2e79074ee364736f6c63430008040033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100885760003560e01c80637de1e5361161005b5780637de1e536146100cf5780638cc08025146100fa5780638da5cb5b1461012d578063bf39d9961461014057600080fd5b8063132184461461008d5780634e71d92d146100a2578063701815c5146100aa5780637a9849dd146100c6575b600080fd5b6100a061009b366004610443565b610149565b005b6100a061023d565b6100b360035481565b6040519081526020015b60405180910390f35b6100b360025481565b6001546100e2906001600160a01b031681565b6040516001600160a01b0390911681526020016100bd565b61011d610108366004610415565b60056020526000908152604090205460ff1681565b60405190151581526020016100bd565b6000546100e2906001600160a01b031681565b6100b360045481565b6000546001600160a01b031633146101915760405162461bcd60e51b815260206004820152600660248201526510b7bbb732b960d11b60448201526064015b60405180910390fd5b816101c65760405162461bcd60e51b8152602060048201526005602482015264217a65726f60d81b6044820152606401610188565b806101fb5760405162461bcd60e51b8152602060048201526005602482015264217a65726f60d81b6044820152606401610188565b8082106102325760405162461bcd60e51b81526020600482015260056024820152642174696d6560d81b6044820152606401610188565b600291909155600355565b3360009081526005602052604090205460ff16156102885760405162461bcd60e51b81526020600482015260086024820152670858db185a5b595960c21b6044820152606401610188565b6002544210156102c35760405162461bcd60e51b8152602060048201526006602482015265085cdd185c9d60d21b6044820152606401610188565b6003544211156102fe5760405162461bcd60e51b81526004016101889060208082526004908201526308595b9960e21b604082015260600190565b3233146103365760405162461bcd60e51b81526004016101889060208082526004908201526321656f6160e01b604082015260600190565b33600081815260056020908152604091829020805460ff1916600190811790915580546004805485518087018752600381526203078360ec1b95810195909552945163731133e960e01b81526001600160a01b03929092169563731133e9956103a59591949093909201610464565b600060405180830381600087803b1580156103bf57600080fd5b505af11580156103d3573d6000803e3d6000fd5b505050506103de3390565b6001600160a01b03167fb449c24d261a59627b537c8c41c57ab559f4205c56bea745ff61c5521bece21460405160405180910390a2565b600060208284031215610426578081fd5b81356001600160a01b038116811461043c578182fd5b9392505050565b60008060408385031215610455578081fd5b50508035926020909101359150565b60018060a01b0385168152600060208581840152846040840152608060608401528351806080850152825b818110156104ab5785810183015185820160a00152820161048f565b818111156104bc578360a083870101525b50601f01601f19169290920160a001969550505050505056fea2646970667358221220dd0db7ecd9de5a642cc691908d2fbf2b0ceab9c2bc0700356dceba2e79074ee364736f6c63430008040033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 4518,
+        "contract": "contracts/CryptoKombatClaim.sol:CryptoKombatClaim",
+        "label": "owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 4521,
+        "contract": "contracts/CryptoKombatClaim.sol:CryptoKombatClaim",
+        "label": "collection",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_contract(ICollectionMint)6752"
+      },
+      {
+        "astId": 4523,
+        "contract": "contracts/CryptoKombatClaim.sol:CryptoKombatClaim",
+        "label": "CLAIM_START",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 4525,
+        "contract": "contracts/CryptoKombatClaim.sol:CryptoKombatClaim",
+        "label": "CLAIM_END",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 4527,
+        "contract": "contracts/CryptoKombatClaim.sol:CryptoKombatClaim",
+        "label": "HERO_ID",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 4531,
+        "contract": "contracts/CryptoKombatClaim.sol:CryptoKombatClaim",
+        "label": "isClaimed",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_mapping(t_address,t_bool)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_contract(ICollectionMint)6752": {
+        "encoding": "inplace",
+        "label": "contract ICollectionMint",
+        "numberOfBytes": "20"
+      },
+      "t_mapping(t_address,t_bool)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => bool)",
+        "numberOfBytes": "32",
+        "value": "t_bool"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

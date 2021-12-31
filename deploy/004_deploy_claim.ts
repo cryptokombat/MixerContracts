@@ -12,10 +12,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const collectionAddress = await getCollectionAddress(chainId)
   const tokenId = await getXmasTokenId(chainId)
 
-  const args = [collectionAddress, tokenId, 1640688528, 1641513600]
+  const args = [collectionAddress, tokenId, 1640952000, 1642161600]
   //Tuesday, December 28, 2021 10:48:48 = 1640688528
-  //Wednesday, December 29, 2021 0:00:00 = 1640736000
-  //Friday, January 7, 2022 0:00:00 = 1641513600
+  //Friday, December 31, 2021 12:00:00 = 1640952000
+  //Friday, January 14, 2022 12:00:00 = 1642161600
 
   const claimContract = await deploy('CryptoKombatClaim', {
     from: deployer,

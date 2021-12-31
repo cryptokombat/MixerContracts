@@ -127,7 +127,7 @@ export const xmasTokenIdByChain: { [networkID in NetworkID]: number | undefined 
   [NetworkID.MAINNET]: 74,
   [NetworkID.RINKEBY]: 74,
   [NetworkID.KOVAN]: undefined,
-  [NetworkID.BSC]: 48,
+  [NetworkID.BSC]: 47,
   [NetworkID.BSC_TESTNET]: 48,
   [NetworkID.POLYGON]: undefined,
   [NetworkID.POLYGON_MUMBAI]: undefined,
