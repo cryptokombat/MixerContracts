@@ -44,7 +44,7 @@ export const RARE_CONFIG = {
 }
 
 const collectionAddress: { [networkID in NetworkID]: string } = {
-  [NetworkID.MAINNET]: '0x0',
+  [NetworkID.MAINNET]: '0xD0f27dfa54FbF80b823a63470C0e693AE4A626b8',
   [NetworkID.RINKEBY]: '0xea0144115c9F722f26963aCC6d564Cee8Bd77F76',
   [NetworkID.KOVAN]: '0x0',
   [NetworkID.BSC]: '0x93e6f7264033dC2210919c4E3feE065313015109',
@@ -124,7 +124,7 @@ const tokenMappingByChain: { [networkID in NetworkID]: TokenMapping | undefined 
 }
 
 export const xmasTokenIdByChain: { [networkID in NetworkID]: number | undefined } = {
-  [NetworkID.MAINNET]: 74,
+  [NetworkID.MAINNET]: 78,
   [NetworkID.RINKEBY]: 74,
   [NetworkID.KOVAN]: undefined,
   [NetworkID.BSC]: 47,
